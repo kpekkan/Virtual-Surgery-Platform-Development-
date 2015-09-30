@@ -1,0 +1,53 @@
+import processing.serial.*;
+
+/**
+This code allows user to import an STL file and pick the face closest to the mouse cursor. hemesh and peasycam libaries are required to run the code.
+peasycam
+ */
+
+import wblut.math.*;
+import wblut.processing.*;
+import wblut.hemesh.*;
+import wblut.geom.*;
+import peasy.*;
+
+PeasyCam cam;
+HE_Mesh mesh;
+WB_Render3D render;
+
+;
+void setup() {
+  size(800, 800, P3D);
+  // Setting the camera
+  cam = new PeasyCam(this, 100);
+  cam.setMinimumDistance(50);
+  cam.setMaximumDistance(500);
+  smooth(8);
+// Importying the STL file 
+  HEC_FromBinarySTLFile creator=new HEC_FromBinarySTLFile(sketchPath("test_simple.stl"));
+  mesh=new HE_Mesh(creator); 
+  mesh.smooth();
+  render=new WB_Render3D(this);
+  
+ 
+}
+
+
+void draw() {
+  background(255);
+  directionalLight(255, 255, 255, 1, 1, -1);
+  directionalLight(127, 127, 127, -1, -1, 1);
+  lights();
+  translate(0,0,20);
+  rotateX(-.5);
+  rotateY(-.5);
+  stroke(0);
+  render.drawEdges(mesh);
+  fill(255);
+  noStroke();
+  render.drawFaces(mesh);
+  fill(255, 0, 0);
+  // locating the closest face
+  HE_Face f=render.pickClosestFace(mesh,mouseX,mouseY);
+  if(f!=null) render.drawFace(f);
+}
