@@ -15,7 +15,7 @@ PeasyCam cam;
 HE_Mesh mesh;
 WB_Render3D render;
 
-;
+
 void setup() {
   size(800, 800, P3D);
   // Setting the camera
