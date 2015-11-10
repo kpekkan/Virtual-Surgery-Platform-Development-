@@ -1,0 +1,48 @@
+import toxi.geom.*;
+import toxi.geom.mesh.*;
+
+import toxi.processing.*;
+import peasy.*;
+float scale=1.0;
+PeasyCam cam;
+TriangleMesh mesh;
+ToxiclibsSupport gfx;
+float scl=1.0;
+//String path;
+void setup() {
+  size(600,600,P3D);
+  //selectInput("Select a file to process:", "fileSelected");
+  cam = new PeasyCam(this, 100);
+  cam.setMinimumDistance(50);
+  cam.setMaximumDistance(500);
+  mesh=(TriangleMesh)new STLReader().loadBinary(sketchPath("test.stl"),STLReader.TRIANGLEMESH);
+  //mesh=(TriangleMesh)new STLReader().loadBinary(sketchPath("mesh-flipped.stl"),STLReader.TRIANGLEMESH).flipYAxis();
+  gfx=new ToxiclibsSupport(this);
+}
+
+
+void draw() {
+  background(10);
+  lights();
+  translate(0,0,20);
+  rotateX(-.5);
+  rotateY(-.5);
+  gfx.origin(new Vec3D(),200);
+  noStroke();
+  gfx.mesh(mesh,true,1);
+  
+ 
+ }
+
+void keyPressed(){
+   if ((key == 'U') || (key == 'u')) {
+  scl=scl+0.1;
+  mesh.scale(scl);
+  gfx.mesh(mesh,true,1);
+   }
+   if ((key == 'D') || (key == 'd')) {
+  scl=scl-0.1;
+  mesh.scale(scl);
+  gfx.mesh(mesh,true,1);
+   }
+}
